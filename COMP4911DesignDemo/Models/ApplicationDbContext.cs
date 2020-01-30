@@ -17,6 +17,7 @@ namespace COMP4911DesignDemo.Models
         public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<TimesheetRow> TimesheetRows { get; set; }
         public DbSet<WorkPackage> WorkPackages { get; set; }
+        public DbSet<Credential> Credentials { get; set; }
             
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,10 +35,17 @@ namespace COMP4911DesignDemo.Models
                 .WithMany()
                 .HasForeignKey(e => e.SupervisorId);
 
+            modelBuilder.Entity<WorkPackage>().HasKey(wp => new {wp.WorkPackageId, wp.ProjectId});  //specify composite PK of work package
+
+            //modelBuilder.Entity<WorkPackage>().HasOne(wp => wp.ParentWorkPackage)
+            //    .WithMany(wp => wp.ChildrenWorkPackages)
+            //    .HasForeignKey(wp => wp.ParentWorkPackageId);
+            ////.OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<WorkPackage>().HasOne(wp => wp.ParentWorkPackage)
                 .WithMany(wp => wp.ChildrenWorkPackages)
-                .HasForeignKey(wp => wp.ParentWorkPackageId);
-                //.OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(wp => new {wp.ParentWorkPackageId, wp.ProjectId});
+            //.OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<EmployeeProjectAssignment>().HasKey(epa => new {epa.EmployeeId, epa.ProjectId});
             modelBuilder.Entity<EmployeeProjectAssignment>().HasOne(epa => epa.Project)
@@ -45,10 +53,12 @@ namespace COMP4911DesignDemo.Models
             modelBuilder.Entity<EmployeeProjectAssignment>().HasOne(epa => epa.Employee)
                 .WithMany(epa => epa.EmployeeProjectAssignments);
 
-            modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasKey(epa => new {epa.EmployeeId, epa.WorkPackageId});
+            modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasKey(epa => new {epa.EmployeeId, epa.WorkPackageId, epa.ProjectId});
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.WorkPackage)
                 .WithMany(epa => epa.EmployeeWorkPackageAssignments);
             modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Employee)
+                .WithMany(epa => epa.EmployeeWorkPackageAssignments);
+            modelBuilder.Entity<EmployeeWorkPackageAssignment>().HasOne(epa => epa.Project)
                 .WithMany(epa => epa.EmployeeWorkPackageAssignments);
 
             //modelBuilder.Entity<TimesheetRow>().HasOne(tr => tr.Timesheet)

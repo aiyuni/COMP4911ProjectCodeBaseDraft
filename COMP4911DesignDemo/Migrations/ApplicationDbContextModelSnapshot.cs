@@ -19,6 +19,24 @@ namespace COMP4911DesignDemo.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("COMP4911DesignDemo.Models.Credential", b =>
+                {
+                    b.Property<string>("CredentialId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CredentialId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Credentials");
+                });
+
             modelBuilder.Entity("COMP4911DesignDemo.Models.Employee", b =>
                 {
                     b.Property<int>("EmployeeId")
@@ -28,6 +46,9 @@ namespace COMP4911DesignDemo.Migrations
 
                     b.Property<string>("EmployeeName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActivated")
+                        .HasColumnType("bit");
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
@@ -67,12 +88,17 @@ namespace COMP4911DesignDemo.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkPackageId")
+                    b.Property<int?>("WorkPackageId")
                         .HasColumnType("int");
 
-                    b.HasKey("EmployeeId", "WorkPackageId");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("WorkPackageId");
+                    b.HasKey("EmployeeId", "WorkPackageId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("WorkPackageId", "ProjectId");
 
                     b.ToTable("EmployeeWorkPackageAssignments");
                 });
@@ -144,6 +170,9 @@ namespace COMP4911DesignDemo.Migrations
                     b.Property<int>("Monday")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Saturday")
                         .HasColumnType("int");
 
@@ -165,11 +194,19 @@ namespace COMP4911DesignDemo.Migrations
                     b.Property<int>("WorkPackageId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkPackageId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkPackageProjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("TimesheetRowId");
+
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("TimesheetId");
 
-                    b.HasIndex("WorkPackageId");
+                    b.HasIndex("WorkPackageId1", "WorkPackageProjectId");
 
                     b.ToTable("TimesheetRows");
                 });
@@ -177,15 +214,37 @@ namespace COMP4911DesignDemo.Migrations
             modelBuilder.Entity("COMP4911DesignDemo.Models.WorkPackage", b =>
                 {
                     b.Property<int>("WorkPackageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ParentWorkPackageId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Activities")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Contractor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Inputs")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Outputs")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentWorkPackageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Purpose")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ResponsibleEngineerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<double?>("WorkPackageCost")
                         .HasColumnType("float");
@@ -196,13 +255,22 @@ namespace COMP4911DesignDemo.Migrations
                     b.Property<string>("WorkPackageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("WorkPackageId");
-
-                    b.HasIndex("ParentWorkPackageId");
+                    b.HasKey("WorkPackageId", "ProjectId");
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("ParentWorkPackageId", "ProjectId");
+
                     b.ToTable("WorkPackages");
+                });
+
+            modelBuilder.Entity("COMP4911DesignDemo.Models.Credential", b =>
+                {
+                    b.HasOne("COMP4911DesignDemo.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("COMP4911DesignDemo.Models.Employee", b =>
@@ -239,9 +307,15 @@ namespace COMP4911DesignDemo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("COMP4911DesignDemo.Models.Project", "Project")
+                        .WithMany("EmployeeWorkPackageAssignments")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("COMP4911DesignDemo.Models.WorkPackage", "WorkPackage")
                         .WithMany("EmployeeWorkPackageAssignments")
-                        .HasForeignKey("WorkPackageId")
+                        .HasForeignKey("WorkPackageId", "ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -257,6 +331,12 @@ namespace COMP4911DesignDemo.Migrations
 
             modelBuilder.Entity("COMP4911DesignDemo.Models.TimesheetRow", b =>
                 {
+                    b.HasOne("COMP4911DesignDemo.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("COMP4911DesignDemo.Models.Timesheet", "Timesheet")
                         .WithMany("TimesheetRows")
                         .HasForeignKey("TimesheetId")
@@ -265,22 +345,22 @@ namespace COMP4911DesignDemo.Migrations
 
                     b.HasOne("COMP4911DesignDemo.Models.WorkPackage", "WorkPackage")
                         .WithMany("TimesheetRows")
-                        .HasForeignKey("WorkPackageId")
+                        .HasForeignKey("WorkPackageId1", "WorkPackageProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("COMP4911DesignDemo.Models.WorkPackage", b =>
                 {
-                    b.HasOne("COMP4911DesignDemo.Models.WorkPackage", "ParentWorkPackage")
-                        .WithMany("ChildrenWorkPackages")
-                        .HasForeignKey("ParentWorkPackageId");
-
                     b.HasOne("COMP4911DesignDemo.Models.Project", "Project")
                         .WithMany("WorkPackages")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("COMP4911DesignDemo.Models.WorkPackage", "ParentWorkPackage")
+                        .WithMany("ChildrenWorkPackages")
+                        .HasForeignKey("ParentWorkPackageId", "ProjectId");
                 });
 #pragma warning restore 612, 618
         }

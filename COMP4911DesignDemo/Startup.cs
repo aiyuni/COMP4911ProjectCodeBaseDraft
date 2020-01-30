@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using COMP4911DesignDemo.Models;
+using COMP4911DesignDemo.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,10 @@ namespace COMP4911DesignDemo
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
+
+            services.AddScoped<IDataRepository<Employee>, EmployeeRepository>();
+            services.AddScoped<IDataRepository<JobTitle>, JobTitleRepository>();
+            services.AddScoped<IDataRepository<Credential>, CredentialRepository>();
 
         }
 

@@ -17,7 +17,7 @@ namespace COMP4911DesignDemo.Models
         public int JobId { get; set; }
 
         public string EmployeeName { get; set; }
-
+        public bool IsActivated { get; set; }
         public int? TimesheetApproverId { get; set; }
         public int? SupervisorId { get; set; }
 
@@ -28,5 +28,20 @@ namespace COMP4911DesignDemo.Models
 
         public IList<EmployeeProjectAssignment> EmployeeProjectAssignments { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
+
+        public Employee()
+        {
+
+        }
+        public Employee(int employeeId, int jobId, string employeeName, int? timesheetApproverId, int? supervisorId, Employee timesheetApprover, Employee supervisor)
+        {
+            EmployeeId = employeeId;
+            JobId = jobId;
+            EmployeeName = employeeName;
+            TimesheetApproverId = timesheetApproverId;
+            SupervisorId = supervisorId;
+            TimesheetApprover = timesheetApprover;
+            Supervisor = supervisor;
+        }
     }
 }

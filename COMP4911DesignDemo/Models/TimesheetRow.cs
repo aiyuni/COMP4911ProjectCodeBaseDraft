@@ -13,6 +13,7 @@ namespace COMP4911DesignDemo.Models
 
         public int TimesheetId { get; set; }
         public int WorkPackageId { get; set; }
+        public int ProjectId { get; set; }
 
         public int Monday { get; set; }
         public int Tuesday { get; set; }
@@ -24,6 +25,7 @@ namespace COMP4911DesignDemo.Models
 
         public Timesheet Timesheet { get; set; }
         public WorkPackage WorkPackage { get; set; }
+        public Project Project { get; set; }
 
     }
 }
