@@ -44,7 +44,10 @@ namespace COMP4911DesignDemo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("EmployeeName")
+                    b.Property<string>("EmployeeFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeLastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActivated")

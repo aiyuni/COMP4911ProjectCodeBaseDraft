@@ -11,12 +11,14 @@ namespace COMP4911DesignDemo.Models
     public class Employee
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmployeeId { get; set; }
 
         [ForeignKey("JobId")]
         public int JobId { get; set; }
 
-        public string EmployeeName { get; set; }
+        public string EmployeeFirstName { get; set; }
+        public string EmployeeLastName { get; set; }
         public bool IsActivated { get; set; }
         public int? TimesheetApproverId { get; set; }
         public int? SupervisorId { get; set; }
@@ -33,15 +35,13 @@ namespace COMP4911DesignDemo.Models
         {
 
         }
-        public Employee(int employeeId, int jobId, string employeeName, int? timesheetApproverId, int? supervisorId, Employee timesheetApprover, Employee supervisor)
+        public Employee(int jobId, string firstName, string lastName, int? timesheetApproverId, int? supervisorId)
         {
-            EmployeeId = employeeId;
             JobId = jobId;
-            EmployeeName = employeeName;
+            EmployeeFirstName = firstName;
+            EmployeeLastName = lastName;
             TimesheetApproverId = timesheetApproverId;
             SupervisorId = supervisorId;
-            TimesheetApprover = timesheetApprover;
-            Supervisor = supervisor;
         }
     }
 }

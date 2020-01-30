@@ -20,12 +20,12 @@ namespace COMP4911DesignDemo.Repository
         {
             if (_credentialContext.Credentials.Any(p => p.CredentialId == entity.CredentialId) == false)
             {
-                System.Diagnostics.Debug.WriteLine("record doesnt exist, adding...");
+                System.Diagnostics.Debug.WriteLine("record doesnt exist, adding credential...");
                 _credentialContext.Credentials.Add(entity);
             }
             else
             {
-                System.Diagnostics.Debug.Write("record already exists, updating...");
+                System.Diagnostics.Debug.Write("record already exists, updating credential...");
                 Credential existingCredential = _credentialContext.Credentials.FirstOrDefault(p => p.CredentialId == entity.CredentialId);
                 this.Update(existingCredential, entity);
             }
@@ -46,7 +46,7 @@ namespace COMP4911DesignDemo.Repository
 
         IEnumerable<Credential> IDataRepository<Credential>.GetAll()
         {
-            throw new NotImplementedException();
+            return _credentialContext.Credentials.ToList();
         }
 
         public void Update(Credential dbEntity, Credential entity)

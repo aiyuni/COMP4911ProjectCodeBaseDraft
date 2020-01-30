@@ -15,9 +15,11 @@ namespace COMP4911DesignDemo.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IDataRepository<Employee> _employeeRepository;
-        public EmployeeController(IDataRepository<Employee> employeeRepository)
+        private readonly IDataRepository<Credential> _credentialRepository;
+        public EmployeeController(IDataRepository<Employee> employeeRepository, IDataRepository<Credential> credentialRepository)
         {
             this._employeeRepository = employeeRepository;
+            this._credentialRepository = credentialRepository;
         }
 
         //GET: api/Employee/AllEmployees
@@ -47,14 +49,20 @@ namespace COMP4911DesignDemo.Controllers
         //    return "value";
         //}
 
-        //// POST: api/Employee
-        //[HttpPost]
-        //public IActionResult Post(RegisteringEmployee newEmployee)
-        //{
-        //    Employee emp = new Employee();
-        //    _employeeRepository.Add(emp);
-        //    return new OkObjectResult(200);
-        //}
+        // POST: api/Employee
+        [HttpPost]
+        public IActionResult Post(RegisteringEmployee newEmployee)
+        {
+            
+            Employee emp = new Employee(newEmployee.JobTitleId, newEmployee.EmpFirstName, newEmployee.EmpLastName, (int?)newEmployee.TimesheetApproverId, 
+                (int?)newEmployee.SupervisorId);
+            _employeeRepository.Add(emp);
+
+            Credential credential = new Credential(newEmployee.EmpUsername, newEmployee.EmpPassword, emp.EmployeeId);
+            _credentialRepository.Add(credential);
+
+            return new OkObjectResult(200);
+        }
 
         // PUT: api/Employee/5
         [HttpPut("{id}")]

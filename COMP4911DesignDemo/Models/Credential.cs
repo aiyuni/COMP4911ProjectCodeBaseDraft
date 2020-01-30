@@ -11,12 +11,24 @@ namespace COMP4911DesignDemo.Models
     public class Credential
     {
         [Key]
-        public string CredentialId { get; set; }
+        public string CredentialId { get; set; }  //this is the username
 
         [ForeignKey("EmployeeId")]
         public int EmployeeId { get; set; }
         public string Password { get; set; }
 
         public Employee Employee { get; set; }
+
+        public Credential()
+        {
+
+        }
+
+        public Credential(string userName, string password, int employeeId)
+        {
+            this.CredentialId = userName;
+            this.Password = password;
+            this.EmployeeId = employeeId;
+        }
     }
 }

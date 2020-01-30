@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace COMP4911DesignDemo.Migrations
 {
@@ -13,7 +14,9 @@ namespace COMP4911DesignDemo.Migrations
                     EmployeeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     JobId = table.Column<int>(nullable: false),
-                    EmployeeName = table.Column<string>(nullable: true),
+                    EmployeeFirstName = table.Column<string>(nullable: true),
+                    EmployeeLastName = table.Column<string>(nullable: true),
+                    IsActivated = table.Column<bool>(nullable: false),
                     TimesheetApproverId = table.Column<int>(nullable: true),
                     SupervisorId = table.Column<int>(nullable: true)
                 },
@@ -59,6 +62,25 @@ namespace COMP4911DesignDemo.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.ProjectId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Credentials",
+                columns: table => new
+                {
+                    CredentialId = table.Column<string>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: false),
+                    Password = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Credentials", x => x.CredentialId);
+                    table.ForeignKey(
+                        name: "FK_Credentials_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,6 +136,14 @@ namespace COMP4911DesignDemo.Migrations
                     WorkPackageName = table.Column<string>(nullable: true),
                     WorkPackageDescription = table.Column<string>(nullable: true),
                     WorkPackageCost = table.Column<double>(nullable: true),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    Purpose = table.Column<string>(nullable: true),
+                    ResponsibleEngineerId = table.Column<int>(nullable: false),
+                    Contractor = table.Column<string>(nullable: true),
+                    Inputs = table.Column<string>(nullable: true),
+                    Activities = table.Column<string>(nullable: true),
+                    Outputs = table.Column<string>(nullable: true),
                     ParentWorkPackageId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -191,20 +221,25 @@ namespace COMP4911DesignDemo.Migrations
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_TimesheetRows_Timesheet_TimesheetId",
                         column: x => x.TimesheetId,
                         principalTable: "Timesheet",
                         principalColumn: "TimesheetId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_TimesheetRows_WorkPackages_WorkPackageId1_WorkPackageProjectId",
                         columns: x => new { x.WorkPackageId1, x.WorkPackageProjectId },
                         principalTable: "WorkPackages",
                         principalColumns: new[] { "WorkPackageId", "ProjectId" },
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Credentials_EmployeeId",
+                table: "Credentials",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeProjectAssignments_ProjectId",
@@ -265,6 +300,9 @@ namespace COMP4911DesignDemo.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Credentials");
+
             migrationBuilder.DropTable(
                 name: "EmployeeProjectAssignments");
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace COMP4911DesignDemo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200130071015_perrytest2")]
-    partial class perrytest2
+    [Migration("20200130075322_initialcreate")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,7 +46,10 @@ namespace COMP4911DesignDemo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("EmployeeName")
+                    b.Property<string>("EmployeeFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeLastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActivated")

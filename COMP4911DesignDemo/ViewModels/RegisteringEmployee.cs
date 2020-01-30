@@ -9,19 +9,29 @@ namespace COMP4911DesignDemo.ViewModels
     {
         public string EmpUsername { get; set; }
         public string EmpPassword { get; set; }
-        public string JobTitle { get; set; }
+        public int JobTitleId { get; set; }
         public string LabourGrade { get; set; }
         public string EmpFirstName { get; set; }
         public string EmpLastName { get; set; }
+        public int? TimesheetApproverId { get; set; }
+        public int? SupervisorId { get; set; }
 
-        public RegisteringEmployee(string empUsername, string empPassword, string jobTitle, string labourGrade, string empFirstName, string empLastName)
+        public RegisteringEmployee()
+        {
+
+        }
+
+        public RegisteringEmployee(string empUsername, string empPassword, int jobTitleId, string labourGrade, string empFirstName, string empLastName,
+            int? timesheetApproverId, int? supervisorId)
         {
             this.EmpUsername = empUsername;
             this.EmpPassword = empPassword;
-            this.JobTitle = jobTitle;
+            this.JobTitleId = jobTitleId;
             this.LabourGrade = labourGrade;
             this.EmpFirstName = empFirstName;
             this.EmpLastName = empLastName;
+            this.TimesheetApproverId = timesheetApproverId;
+            this.SupervisorId = supervisorId;
         }
     }
 }
