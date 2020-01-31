@@ -17,6 +17,9 @@ namespace COMP4911DesignDemo.Models
         public int EmployeeId { get; set; }
         public string Password { get; set; }
 
+        public string Row_Lst_Upd_Uid { get; set; }
+        public DateTime Row_Lst_Upd_Ts { get; set; }
+
         public Employee Employee { get; set; }
 
         public Credential()

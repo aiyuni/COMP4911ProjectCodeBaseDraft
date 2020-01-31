@@ -55,7 +55,7 @@ namespace COMP4911DesignDemo.Controllers
         {
             
             Employee emp = new Employee(newEmployee.JobTitleId, newEmployee.EmpFirstName, newEmployee.EmpLastName, (int?)newEmployee.TimesheetApproverId, 
-                (int?)newEmployee.SupervisorId);
+                (int?)newEmployee.SupervisorId, true, newEmployee.isProjectManager, newEmployee.isAdmin, newEmployee.isHumanResources);
             _employeeRepository.Add(emp);
 
             Credential credential = new Credential(newEmployee.EmpUsername, newEmployee.EmpPassword, emp.EmployeeId);

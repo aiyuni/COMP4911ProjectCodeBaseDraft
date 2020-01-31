@@ -15,6 +15,9 @@ namespace COMP4911DesignDemo.ViewModels
         public string EmpLastName { get; set; }
         public int? TimesheetApproverId { get; set; }
         public int? SupervisorId { get; set; }
+        public bool isProjectManager { get; set; }
+        public bool isAdmin { get; set; }
+        public bool isHumanResources { get; set; }
 
         public RegisteringEmployee()
         {
@@ -22,7 +25,7 @@ namespace COMP4911DesignDemo.ViewModels
         }
 
         public RegisteringEmployee(string empUsername, string empPassword, int jobTitleId, string labourGrade, string empFirstName, string empLastName,
-            int? timesheetApproverId, int? supervisorId)
+            int? timesheetApproverId, int? supervisorId, bool isProjectManager, bool isAdmin, bool isHumanResources)
         {
             this.EmpUsername = empUsername;
             this.EmpPassword = empPassword;
@@ -32,6 +35,9 @@ namespace COMP4911DesignDemo.ViewModels
             this.EmpLastName = empLastName;
             this.TimesheetApproverId = timesheetApproverId;
             this.SupervisorId = supervisorId;
+            this.isProjectManager = isProjectManager;
+            this.isAdmin = isAdmin;
+            this.isHumanResources = isHumanResources;
         }
     }
 }

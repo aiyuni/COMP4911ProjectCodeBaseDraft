@@ -31,6 +31,9 @@ namespace COMP4911DesignDemo.Models
 
         public Project Project { get; set; }
 
+        public string Row_Lst_Upd_Uid { get; set; }
+        public DateTime Row_Lst_Upd_Ts { get; set; }
+
         public IList<TimesheetRow> TimesheetRows { get; set; }
         public IList<EmployeeWorkPackageAssignment> EmployeeWorkPackageAssignments { get; set; }
     }

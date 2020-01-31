@@ -23,6 +23,9 @@ namespace COMP4911DesignDemo.Models
         public int Saturday { get; set; }
         public int Sunday { get; set; }
 
+        public string Row_Lst_Upd_Uid { get; set; }
+        public DateTime Row_Lst_Upd_Ts { get; set; }
+
         public Timesheet Timesheet { get; set; }
         public WorkPackage WorkPackage { get; set; }
         public Project Project { get; set; }

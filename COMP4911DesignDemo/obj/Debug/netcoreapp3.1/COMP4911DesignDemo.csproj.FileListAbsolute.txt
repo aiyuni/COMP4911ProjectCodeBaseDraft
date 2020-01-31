@@ -158,3 +158,4 @@ C:\Users\perry\source\repos\COMP4911DesignDemo\COMP4911DesignDemo\bin\Debug\netc
 C:\Users\perry\source\repos\COMP4911DesignDemo\COMP4911DesignDemo\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\perry\source\repos\COMP4911DesignDemo\COMP4911DesignDemo\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\perry\source\repos\COMP4911DesignDemo\COMP4911DesignDemo\obj\Debug\netcoreapp3.1\COMP4911DesignDemo.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\perry\source\repos\COMP4911DesignDemo\COMP4911DesignDemo\obj\Debug\netcoreapp3.1\COMP4911DesignDemo.csprojAssemblyReference.cache
